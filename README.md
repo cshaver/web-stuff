@@ -46,3 +46,7 @@
 * http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
 * http://365git.tumblr.com/post/3308646748/writing-git-commit-messages
 * https://github.com/stevemao/conventional-changelog-cli
+
+## Podcasts
+
+* Javascript Air
