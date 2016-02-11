@@ -15,7 +15,7 @@
 
 ---
 
-### EmbeddedJS: Advances in NodeBots _Kassandra Perch_
+### EmbeddedJS: Advances in NodeBots _[Kassandra Perch](https://github.com/nodebotanist) [@nodebotanist](https://twitter.com/nodebotanist)_
 
 - Dev evangelist at Auth0
 - Wearables!
@@ -336,3 +336,76 @@ Rating 1-10 how you feel along the sprint's timeline, gives you something to loo
 Sometimes the nature of the problem changes based on the fact that the discussion was had.
 
 **If it's important, it will come back.**
+
+---
+
+### Closing Plenary: The Economy Of Keystrokes [_Kyle Simpson_](https://github.com/getify) [@getify](https://twitter.com/getify)
+
+#### Keystrokes tradeoffs
+
+- `=>` saves characters by stripping `function() {}` keystrokes
+- Readability?
+  - Code readability has been studied formally - they had an automated, objective metric to measure readability
+  - Rated by a developer depends on their set of code patterns - not that they don't understand the language or syntax. **Familiarity** is a really strong component to the notion of readability.
+- "Tribal knowledge" that is required to easily understand code as a developer.
+
+**Infinite** number of programs that can solve any particular problem.
+
+JavaScript engine will take our code as a _suggestion_ and comes up with a much more efficient way. We have to separate out the details that we're worrying about like i++ or whatever, that the JS engine is just going to figure that out.
+
+##### If our code is just a suggestion to the JS engine, then what is the purpose of code?
+First and foremost, code is a method of communication not just to the computer but to our teammates and our future selves.
+
+> The code could *easily* have been done with just a single and understandable conditional, and the compiler would actually have generated better code, and the could would look better and more understandable.
+>
+
+> I want to make it clear to *everybody* that code like this is completely unacceptable.
+
+> -- <cite>[Linus Torvalds](https://en.wikipedia.org/wiki/Linus_Torvalds)</cite>
+
+> Any fool can write code that a computer can understand. Good programmers write code that humans can understand.
+>
+> -- <cite>[Martin Fowler](https://twitter.com/martinfowler)</cite>
+
+#### reader > writer
+
+The keystrokes that we're spending ought to be spent with the **reader** in mind, _not_ the **writer**.
+
+##### [simplicity matters](https://www.youtube.com/watch?v=rI8tNMsozo0)
+Notion that we go after _ease_ and call it _simplicity_ (being the opposite of complexity, being things being bought tightly together). When we go after easiness first, we oftentimes end up with complexity. When value simplicity first, we often end up with opportunities for easiness.
+
+###### `x + y * z`
+You are requiring your **reader** to have the tribal knowledge of operator precedence.
+
+###### `x + (y * z)` <-- these two keystrokes are _so important_ to someone without that tribal knowledge
+
+###### `x = x || 42`
+Super clever, but when teaching brand new developers they struggle to understand why this works the way it does. They struggle with where other language that would return something other than a boolean value.
+
+###### `? : vs if-else`
+Goes off the rails when you start chaining them together. You've invited the reader of your code to a special set of tribal knowledge called **accociativity** (ternary operators being right associative vs other operators left associative).
+
+Does this mean dumb down your code? Not necessarily. We want to have a culture of learning, where we have code reviews centered around opportunities to write better code. Say a junior dev submits something and a senior devs takes the opportunity to teach them something about the operator and show a better way of doing it.
+
+Biggest narrative to take away from ES6 is that it takes us away from imperative and moves us to a declarative model.
+
+Telling it how to do something vs telling it "this is what i want to have happen, you figure it out"
+
+#### Abstractions?
+Absolutely abstractions are good, but it's bad when we hide the abstractions.
+Carps 3 laws - any sufficiently advanced tech is indistinguishable from magic.
+repurpose as any sufficiently **unlearned** tech is indistinguishable from magic.
+
+Good programmers don't try to hide stuff, they intentionally move things behind abstractions and they know how that code works
+
+#### Code comments
+
+Problem is we're often trying to answer the "what" question - we should be answering the "why" question.
+
+`i++ // add one to i`
+vs.
+`i++ // increment i because...`
+
+#### Make every keystroke and every keystroke saved count for **REAL VALUE**
+
+Not saying never use the shortened form or always use the longer form. Make code more _teachable_.
