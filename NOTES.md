@@ -73,32 +73,28 @@ _(note: pretty Elm-biased)_
  - reusing interfaces
 
 1. Event happens, what do we store?
-
-  * jQuery -> app state goes in the DOM
-  * Flux -> app state goes in stores
+  - jQuery -> app state goes in the DOM
+  - Flux -> app state goes in stores
     - inspect the event, update the stores
-  * Elm -> App state goes in the model
+  - Elm -> App state goes in the model
     - inspect the event, update the model
 
-2. Given selections, determine validity
-
-  `isValid(selectedGenres)`
-
-  * Flux -> pass to `isValid()`
-  * Elm -> pass to `isValid()`
-  * jQuery -> do query to get app state from DOM ie getGenres(), **then** call `isValid()`
+2. Given selections, determine validity, e.g. `isValid(selectedGenres)`
+  - Flux -> pass to `isValid()`
+  - Elm -> pass to `isValid()`
+  - jQuery -> do query to get app state from DOM e.g. `getGenres()`, **then** call `isValid()`
 
 3. Testing
 
   We want test coverage - what does that take?
 
-  * Elm -> call `isValid()`, check the result
-  * Flux -> call `isValid()`, check the result
-  * jQuery -> call `isValid()`, check the result, but that isnt complete test coverage
+  - Elm -> call `isValid()`, check the result
+  - Flux -> call `isValid()`, check the result
+  - jQuery -> call `isValid()`, check the result, but that isn't complete test coverage
      - we still need to test the query function that gets app state from the DOM
      - changing styles (not even related to business logic) affects our testing and can break things
 
-     jQuery started off with an advantage (less work, same results), now we have to do more work to validate and more work to test
+   jQuery started off with an advantage (less work, same results), now we have to do more work to validate and more work to test
 
 4. Render validations
 
@@ -120,26 +116,25 @@ Flux, Elm -> App state = single source of truth
   EX: select subgenres, an accordion instead of a dropdown, but we want them to be reusable
   User clicks to expand accordion -> what state changes?
 
- * jQuery -> change the DOM, toggle an attribute (app state lives in the DOM)
+ - jQuery -> change the DOM, toggle an attribute (app state lives in the DOM)
 
- * Flux -> Change a store, have to use React + Flux.
+ - Flux -> Change a store, have to use React + Flux.
     - React has its own way of doing this. React uses drop-in components
     - components manage their own states
     - Who wins when we can do either? **change store** (Flux) or **component** (React) state?
     - Sidestepping flux is the path suggested by libraries => mutate component states
-    - What does that mean for reuseablity?
+    - What does that mean for reusability?
     - **Querying is back in** (a la jQuery), we have to ask each of our components and ask for their state. gathering scattered pieces of state to assemble the whole picture
 
-* Elm -> If we need it to render the UI, it goes in the Model. Accordion expansion state goes in the Model
-    - Reproducibility still works and scales, this is how elm can have a time travelling debugger that just works. App state is all in one place, in the model
+ - Elm -> If we need it to render the UI, it goes in the Model. Accordion expansion state goes in the Model
+    - Reproducibility still works and scales, this is how elm can have a time traveling debugger that just works. App state is all in one place, in the model
 
-_Can we get reproducibility with React + Flux?_
-
+###### _Can we get reproducibility with React + Flux?_
 Yes, if we use 100% stateless components, including all third-party components
 
-  * jQuery -> deferred effort, least maintainable
-  * Flux -> simpler system, more maintainable, starts to get more complex
-  * Elm -> simplest, maintainable
+  - jQuery -> deferred effort, least maintainable
+  - Flux -> simpler system, more maintainable, starts to get more complex
+  - Elm -> simplest, maintainable
 
 (company **noredink**, uses Elm extensibly in production)
 
@@ -167,119 +162,119 @@ Edge is designed to be more compatible with current major browsers.
 
 ### Node, npm, and Service Oriented Architecture _Laurie Voss_
 
- SOAs are a distributed system:
+ ###### SOAs are a distributed system:
    - concurrency
    - no global clock
    - independent component - failures don't propagate to other parts of the system
 
- What about microservices?
- _Not a huge difference (one takes lots longer)_
+ ###### What about microservices?
+ Not a huge difference (one takes lots longer)
 
- #### SOA Advantages
+#### SOA Advantages
 
-  - technical
-    - resource efficiency. 4x large app vs 8x small app (very oversimplified, but this works regradless of your constrained resource)
-    - cost efficiency
-      - **specialization** - you can buy hardware that is specialized to your needs
-      - **scalability** - you can scale only the parts that you needs
-      - **tunability** - you can tune your redundancy, e.g. you will want redundancy for front page of app but maybe not for marketing pages
-    - robustness
-      - in a monolith one bad deploy takes down the whole app
-      - in a SOA only the one thing you were messing with would go down
-      - simple math - 100 boxes, 1% chance of failure, changes of being _completely_ down is 0.01*100. chance of being _slightly_ down is 0.01*100 = 100%
-      - you need to be really good at replacing hardware because it's a weekly thing vs a every few months thing
-      - prior to 2013 npm would be down for hours at a time. as of now it's more like 10 minutes per year
-    - debuggability
-      - one box only ever has one service = one to one relationship to the service that's broken to the machine that needs fixing
-      - only a certain amount of unique code to each service, so more simple to debug
-  - organizational
-    - Conway's Law in reverse (software reflects the structure of the organization that built it).
-    - simpler systems are simpler. a service is a small isolated domain of understanding, much easier to fit the understanding into the human brain
-    - smaller systems allow for smaller teams - communication within smaller teams is drastically better. Eg. even a 5 person team can have huge communication issues. impossible to get say a 50 person team on the same page.
-    - smaller teams are better teams. big teams are hard, so don't have any. better sense of ownership because you can fix the whole system into their brain - better tests, better debugging, etc
+- **technical**
+  - resource efficiency. 4x large app vs 8x small app (very oversimplified, but this works regradless of your constrained resource)
+  - cost efficiency
+    - **specialization** - you can buy hardware that is specialized to your needs
+    - **scalability** - you can scale only the parts that you needs
+    - **tunability** - you can tune your redundancy, e.g. you will want redundancy for front page of app but maybe not for marketing pages
+  - robustness
+    - in a monolith one bad deploy takes down the whole app
+    - in a SOA only the one thing you were messing with would go down
+    - simple math - 100 boxes, 1% chance of failure, changes of being _completely_ down is 0.01*100. chance of being _slightly_ down is 0.01*100 = 100%
+    - you need to be really good at replacing hardware because it's a weekly thing vs a every few months thing
+    - prior to 2013 npm would be down for hours at a time. as of now it's more like 10 minutes per year
+  - debuggability
+    - one box only ever has one service = one to one relationship to the service that's broken to the machine that needs fixing
+    - only a certain amount of unique code to each service, so more simple to debug
+- **organizational**
+  - Conway's Law in reverse (software reflects the structure of the organization that built it).
+  - simpler systems are simpler. a service is a small isolated domain of understanding, much easier to fit the understanding into the human brain
+  - smaller systems allow for smaller teams - communication within smaller teams is drastically better. Eg. even a 5 person team can have huge communication issues. impossible to get say a 50 person team on the same page.
+  - smaller teams are better teams. big teams are hard, so don't have any. better sense of ownership because you can fix the whole system into their brain - better tests, better debugging, etc
 
- #### Why node is great at SOA
+#### Why node is great at SOA
 
-  1. _shit i missed it_
-  2. Small modules make for efficient microservices
-  3. node and npm make shared logic easier
-      - node built with a package manager in mind
-      - literally impossible for dependencies to fight for eachother in node
+1. _shit i missed it_
+2. Small modules make for efficient microservices
+3. node and npm make shared logic easier
+    - node built with a package manager in mind
+    - literally impossible for dependencies to fight for eachother in node
 
- #### product plug:
+#### product plug:
 
- - ❗️ share code within your company using [npm On-Site](https://www.npmjs.com/onsite), or [npm Organizations](https://docs.npmjs.com/orgs/what-are-orgs)
+- ❗️ share code within your company using [npm On-Site](https://www.npmjs.com/onsite), or [npm Organizations](https://docs.npmjs.com/orgs/what-are-orgs)
 
- #### Best practices for SOA in node:
+#### Best practices for SOA in node:
 
-  - **application level**:
-      - isolation
-  - **service level**:
-      - consistency
-          - logging
-          - error handling
-            - _do not recover._ if we knew how to recover, the crash wouldn't have happened.
-            - crash on error
-            - restart on crash
-            - monitor restarts
-      - shared logic
-        - the less unique code, the faster the fix
-        - logging, errors, etc should be a module
-        - the smaller you can keep the volume of unique code in your service, the easier it will be to debug. 200 lines for a service is _super_ easy to understand and debug
-  - **architectural**:
-    - async ops will save your life
-    - fail safely and softly
-      - expect flaky networks
-        - detect a network hang. amazon will have a hiccup, things will hang for 60 seconds
-      - degrade gracefully
-      - recover automatically
-      - if authentication service is down, its failure should show public content
-    - race conditions
-      - there is no magic bullet
-      - `conditions. So race many`
-  - **operational**:
-      - configuration
-        - one source of truth
-        - configure at deploy, not at startup or restart
-        - service should only change config when it is _explicitly expected to_
-  - **deployment**:
-    - deployment has become a constant thing
-    - automate **everything**
-    - use "canary" servers - deploying code to production but only to say 2% of traffic.
-      - people do really really weird things in production
-    - handle cold starts
-      - can the service deploy if it's down?
-      - will creep up on you slowly
-  - **metrics**:
-      - capture every request: source, frequency, size
-  - **monitoring & alerting**:
-    - real time dashboards - feels "enterprisey" but is the fastest form of debugging
-    - alert on out-of-range metrics
+- **application level**:
+    - isolation
+- **service level**:
+    - consistency
+        - logging
+        - error handling
+          - _do not recover._ if we knew how to recover, the crash wouldn't have happened.
+          - crash on error
+          - restart on crash
+          - monitor restarts
+    - shared logic
+      - the less unique code, the faster the fix
+      - logging, errors, etc should be a module
+      - the smaller you can keep the volume of unique code in your service, the easier it will be to debug. 200 lines for a service is _super_ easy to understand and debug
+- **architectural**:
+  - async ops will save your life
+  - fail safely and softly
+    - expect flaky networks
+      - detect a network hang. amazon will have a hiccup, things will hang for 60 seconds
+    - degrade gracefully
+    - recover automatically
+    - if authentication service is down, its failure should show public content
+  - race conditions
+    - there is no magic bullet
+    - `conditions. So race many`
+- **operational**:
+    - configuration
+      - one source of truth
+      - configure at deploy, not at startup or restart
+      - service should only change config when it is _explicitly expected to_
+- **deployment**:
+  - deployment has become a constant thing
+  - automate **everything**
+  - use "canary" servers - deploying code to production but only to say 2% of traffic.
+    - people do really really weird things in production
+  - handle cold starts
+    - can the service deploy if it's down?
+    - will creep up on you slowly
+- **metrics**:
+    - capture every request: source, frequency, size
+- **monitoring & alerting**:
+  - real time dashboards - feels "enterprisey" but is the fastest form of debugging
+  - alert on out-of-range metrics
 
- #### What is npm?
-  1. CLI
-  2. registry
-  3. www
-  4. servers
+#### What is npm?
+1. CLI
+2. registry
+3. www
+4. servers
 
-  Really one big thing -> gigantic SOA
+Really one big thing -> gigantic SOA
 
-  - **The CLI**
-      - largest consumer of the registry
-  - **the Registry**
-      - 99% of requests dont talk to the auth service (do this if you can get away with it!)
-      - _{weee diagram}_
-      - User APL, license API, binary/metadata stores, etc
-      - **followers** (new thing)
-        - using cache DB as an event queue
-        - credentials follower: seeing if you accidentally left your credentials in your package
-        - tarball follower: if you publish a package, it needs to go to all the servers worldwide. lets you publish to just one locale and copies it to one of the other ones (creates a race condition, has some followup logic in the CDN to account for  this)
-    - **www**
-      - registry API follower
-      - elastisearch follower
-    - **npm On-Site**
-      - literally a copy of the registry architecture but crammed down into wherever you want it to be
-      - can be super confident about the scaling abilities of npm offsite because your companies registry isn't going to be as big as all the npm registries in the world ;)
+- **The CLI**
+    - largest consumer of the registry
+- **the Registry**
+    - 99% of requests dont talk to the auth service (do this if you can get away with it!)
+    - _{weee diagram}_
+    - User APL, license API, binary/metadata stores, etc
+    - **followers** (new thing)
+      - using cache DB as an event queue
+      - credentials follower: seeing if you accidentally left your credentials in your package
+      - tarball follower: if you publish a package, it needs to go to all the servers worldwide. lets you publish to just one locale and copies it to one of the other ones (creates a race condition, has some followup logic in the CDN to account for  this)
+  - **www**
+    - registry API follower
+    - elastisearch follower
+  - **npm On-Site**
+    - literally a copy of the registry architecture but crammed down into wherever you want it to be
+    - can be super confident about the scaling abilities of npm offsite because your companies registry isn't going to be as big as all the npm registries in the world ;)
 
 ---
 
@@ -300,17 +295,17 @@ Edge is designed to be more compatible with current major browsers.
 > Dan Mosedale is a co-founder of the Mozilla project and is currently writing code for Hello, a web-sharing Firefox feature. Other Mozilla work includes standing up WebRTC in Firefox Android, implementing HTML5 web-based protocol handlers in Firefox desktop, and working on the Gladius HTML 3D gaming framework.
 
 
-  - **What did we do well?**
-    - Give ourselves credit. We tend to focus on all the things that are in front of us, but giving ourselves credit really empowers us intsead of getting too overwhelmed by "oh look at all the shit to do"
-  - **What have we learned?**
-    - Act of talking about things makes new things known to other members of the team.
-    - More context for what's going on in the project for everyone on the team.
-  - **What could we have done better?**
-    - Almost all the time people give completely undefined points that we don't know how to do better. It's something that **puzzles us**.
-  - What puzzles us?
-    - We're allowed to just leave shit on the table.
-      - This prevents punishing the messenger - when someone brings up an issue / puzzle and then is forced to own it.
-    - What are some small experiments we could try to make it a little bit better? Having a retrospective every week means you have the chance to try things without just saying "this doesn’t work, we're doing this now and if it doesn’t work well then shit"
+- **What did we do well?**
+  - Give ourselves credit. We tend to focus on all the things that are in front of us, but giving ourselves credit really empowers us intsead of getting too overwhelmed by "oh look at all the shit to do"
+- **What have we learned?**
+  - Act of talking about things makes new things known to other members of the team.
+  - More context for what's going on in the project for everyone on the team.
+- **What could we have done better?**
+  - Almost all the time people give completely undefined points that we don't know how to do better. It's something that **puzzles us**.
+- What puzzles us?
+  - We're allowed to just leave shit on the table.
+    - This prevents punishing the messenger - when someone brings up an issue / puzzle and then is forced to own it.
+  - What are some small experiments we could try to make it a little bit better? Having a retrospective every week means you have the chance to try things without just saying "this doesn’t work, we're doing this now and if it doesn’t work well then shit"
 
 At the beginning beginning of a retrospective reviewing the experiments that are in flight. Every week reviewing the list of stuff, declare some things a success, some times you don't know, sometimes you know it's not working - try to think of something else or move on.
 
@@ -347,14 +342,14 @@ Sometimes the nature of the problem changes based on the fact that the discussio
 - Readability?
   - Code readability has been studied formally - they had an automated, objective metric to measure readability
   - Rated by a developer depends on their set of code patterns - not that they don't understand the language or syntax. **Familiarity** is a really strong component to the notion of readability.
-- "Tribal knowledge" that is required to easily understand code as a developer.
+- "**Tribal knowledge**" that is required to easily understand code as a developer.
 
 **Infinite** number of programs that can solve any particular problem.
 
-JavaScript engine will take our code as a _suggestion_ and comes up with a much more efficient way. We have to separate out the details that we're worrying about like i++ or whatever, that the JS engine is just going to figure that out.
+JavaScript engine will take our code as a _suggestion_ and comes up with a much more efficient way. We have to separate out the details that we're worrying about like `i++` vs whatever, know that the JS engine is just going to figure that out on its own.
 
 ##### If our code is just a suggestion to the JS engine, then what is the purpose of code?
-First and foremost, code is a method of communication not just to the computer but to our teammates and our future selves.
+First and foremost, code is a method of communication not just to the computer but _to our teammates and our future selves._
 
 > The code could *easily* have been done with just a single and understandable conditional, and the compiler would actually have generated better code, and the could would look better and more understandable.
 >
@@ -367,8 +362,7 @@ First and foremost, code is a method of communication not just to the computer b
 >
 > -- <cite>[Martin Fowler](https://twitter.com/martinfowler)</cite>
 
-#### reader > writer
-
+##### reader > writer
 The keystrokes that we're spending ought to be spent with the **reader** in mind, _not_ the **writer**.
 
 ##### [simplicity matters](https://www.youtube.com/watch?v=rI8tNMsozo0)
@@ -377,7 +371,8 @@ Notion that we go after _ease_ and call it _simplicity_ (being the opposite of c
 ###### `x + y * z`
 You are requiring your **reader** to have the tribal knowledge of operator precedence.
 
-###### `x + (y * z)` <-- these two keystrokes are _so important_ to someone without that tribal knowledge
+###### `x + (y * z)`
+These two keystrokes are _so important_ to someone without that tribal knowledge
 
 ###### `x = x || 42`
 Super clever, but when teaching brand new developers they struggle to understand why this works the way it does. They struggle with where other language that would return something other than a boolean value.
